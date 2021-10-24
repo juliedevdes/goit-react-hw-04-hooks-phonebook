@@ -61,7 +61,7 @@ class App extends React.Component {
         <h2>Phonebook</h2>
         <ContacsForm onSubmit={this.onSubmit} />
         <h2>Contacts</h2>
-        <Filter filter={this.state.filter} onChange={this.updateFilter} />
+        <Filter onChange={this.updateFilter} />
         <ContasctsList
           contacts={visibleContacts}
           removeContact={this.removeContact}
