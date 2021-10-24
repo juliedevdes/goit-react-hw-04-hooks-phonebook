@@ -1,67 +1,75 @@
-import React from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import s from "./ContactForm.module.css";
 
 import PropTypes from "prop-types";
 
-export default class ContacsForm extends React.Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+export default function ContacsForm({ onSubmit }) {
+  const [name, setName] = useState("");
+  const [number, setNum] = useState("");
+  const [id, setId] = useState(uuidv4());
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.currentTarget;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "number":
+        setNum(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  state = {
-    name: "",
-    number: "",
-    id: uuidv4(),
-  };
-
-  handleInputChange = (e) => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit({ name, number, id });
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: "", number: "", id: uuidv4() });
+  const reset = () => {
+    setId(uuidv4());
+    setNum("");
+    setName("");
   };
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          name:
-          <input
-            className={s.inputName}
-            placeholder="Jane Wayeet"
-            name="name"
-            onChange={this.handleInputChange}
-            value={this.state.name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            type="text"
-            required
-          />
-        </label>
-        <label className={s.label}>
-          number:
-          <input
-            className={s.inputNum}
-            placeholder="+ 00-000-00"
-            name="number"
-            onChange={this.handleInputChange}
-            value={this.state.number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            type="tel"
-            required
-          />
-        </label>
-        <button className={s.btn} type="submit">
-          add contact
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        name:
+        <input
+          className={s.inputName}
+          placeholder="Jane Wayeet"
+          name="name"
+          onChange={handleInputChange}
+          value={name}
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          type="text"
+          required
+        />
+      </label>
+      <label className={s.label}>
+        number:
+        <input
+          className={s.inputNum}
+          placeholder="+ 00-000-00"
+          name="number"
+          onChange={handleInputChange}
+          value={number}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          type="tel"
+          required
+        />
+      </label>
+      <button className={s.btn} type="submit">
+        add contact
+      </button>
+    </form>
+  );
 }
+
+ContacsForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

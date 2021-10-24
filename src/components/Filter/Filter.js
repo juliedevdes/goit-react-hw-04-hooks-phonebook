@@ -1,10 +1,10 @@
-import { useState } from "react";
+import useLocalSt from "../../hooks/useLocalSt";
 
 import s from "./Filter.module.css";
 import PropTypes from "prop-types";
 
 export default function Filter({ onChange }) {
-  const [filterValue, setFilter] = useState("");
+  const [filterValue, setFilter] = useLocalSt("filterValue", "");
 
   const handleFilterChange = (e) => {
     setFilter(e.currentTarget.value);
